@@ -1,3 +1,31 @@
+const [image, setImage] = useState(null);
+<input 
+  type="file" 
+  accept="image/*"
+  onChange={(e) => setImage(e.target.files[0])}
+/>
+    const handleAI = async () => {
+  if (!image) return alert("Upload gambar dulu");
+
+  const reader = new FileReader();
+  reader.onloadend = async () => {
+    const base64 = reader.result;
+
+    const res = await fetch("/api/ai-parse", {
+      method: "POST",
+      body: JSON.stringify({ image: base64 }),
+    });
+
+    const data = await res.json();
+
+    setForm(data);
+  };
+
+  reader.readAsDataURL(image);
+};
+
+<button onClick={handleAI}>Scan Invoice (AI)</button>
+
 "use client";
 import { useState } from "react";
 
